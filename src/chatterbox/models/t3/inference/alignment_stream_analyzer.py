@@ -65,7 +65,13 @@ class AlignmentStreamAnalyzer:
             self._add_attention_spy(tfmr, i, layer_idx, head_idx)
 
     def _add_attention_spy(self, tfmr, buffer_idx, layer_idx, head_idx):
-        """
+        """ 
+    if hasattr(tfmr, "set_attn_implementation"):
+        tfmr.set_attn_implementation("eager")
+    if hasattr(tfmr.config, "attn_implementation"):
+        tfmr.config.attn_implementation = "eager"
+
+    tfmr.config.output_attentions = True
         Adds a forward hook to a specific attention layer to collect outputs.
         """
         def attention_forward_hook(module, input, output):
